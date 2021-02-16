@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:newsapi/models/articles.dart';
 import 'package:newsapi/models/news.dart';
 import 'package:http/http.dart' as http;
 
@@ -22,7 +23,7 @@ class _NewsScreenState extends State<NewsScreen> {
           builder: (context, snapshot){
             if(snapshot.hasData) {
               final news = snapshot.data;
-              return newsWidget(context, news);
+              return topNewsWidget(context, news);
             }else if (snapshot.hasError){
               print(snapshot.error.toString());
               return Center(child: Text(snapshot.error.toString()));
@@ -59,7 +60,23 @@ class _NewsScreenState extends State<NewsScreen> {
         Text(
           'Status: ${news.totalResults}'
         ),
+
       ],
+    );
+  }
+
+  Widget topNewsWidget(BuildContext context, News news) {
+    return Container(
+      height: MediaQuery.of(context).size.height,
+      width: MediaQuery.of(context).size.width,
+      child: ListView.builder(
+        itemCount: news.articleList.length,
+        itemBuilder: (context, index){
+          return Card(
+            child: Text(news.articleList[index].title),
+          );
+        },
+      ),
     );
   }
 }
